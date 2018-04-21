@@ -2,14 +2,13 @@
 
 
 class User_model extends CI_Model{
-    public function create_user($username,$sex,$age,$telephone,$count,$type,$entertime) {
+    public function create_user($username,$sex,$age,$telephone,$address,$entertime) {
         $this->db->insert("heat_user",array(
             'user_name'=>$username,
             'user_sex'=>$sex,
             'user_age'=>$age,
             'user_telephone'=>$telephone,
-            'user_count'=>$count,
-            'user_type'=>$type,
+            'user_address'=>$address,
             'user_entertime'=>$entertime,
         ));
         return $this->db->affected_rows();
@@ -30,11 +29,18 @@ class User_model extends CI_Model{
 
     public function find_user_information($query) {
         if($query) {
-            $sql = "select * form heat_user,heat_balance"//查所有
+            $sql = "select * from heat_user,heat_balance";//查所有
+            return $this->db->query($sql)->result();
+
         } else {
-            $sql = "select * from heat_user u,heat_balance b where u.user_name like '%'.$query.'%'"//查模糊匹配
+            $sql = "select * from heat_user u,heat_balance b where u.user_name='$query'";//查模糊匹配
+            return $this->db->query($sql)->row();
         }
-        return $this->db->query($sql)->result();
+//        return $this->db->query($sql)->result();
+    }
+    public function find_user_id($username) {
+        $sql = "select * from heat_user where user_name='$username'";//查模糊匹配
+        return $this->db->query($sql)->row();
     }
 
 

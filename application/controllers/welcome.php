@@ -10,40 +10,9 @@ class Welcome extends CI_Controller {
         $this->load->model('admin_model');
         $row=$this->admin_model->check_login($username,$password);
         if($row) {
-//            echo $row;
-            echo json_encode($row);
-            //echo '1';//登录成功
+            echo json_encode($row);//登录成功
         } else {
             echo '0';//登录失败
-        }
-    }
-    public function mylogin(){
-//        header('Access-Control-Allow-Origin: *');
-//        header('Access-Control-Allow-Headers: X-Requested-With,Content-Type');
-        header('Access-Control-Allow-Origin:*');
-        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-        header('Access-Control-Max-Age: 1728000');
-//        Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'
-        $studyId=$this->input->post('studyId');
-        $password=$this->input->post('password');
-//        echo($studyId+$password);
-        $this->load->model('user_model');
-        $row=$this->user_model->check_mylogin($studyId,$password);
-        $username=$this->user_model->get_username_by_studyId($studyId);
-        if($row) {
-//            if($username){
-//                $this->load->helper('cookie');
-//                $cookie = array(
-//                    'studyId'   => $studyId,
-//                    'username' => $username,
-//                    'power'  => '0'
-//                );
-//                $this->input->set_cookie($cookie);
-            echo '1';
-//            }
-        } else {
-            echo '0';
         }
     }
     public function logout(){
@@ -52,10 +21,7 @@ class Welcome extends CI_Controller {
         header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
         header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
         header('Access-Control-Max-Age: 1728000');
-        // localStorage.clear();
         echo '1';
-        // localStorage.username = "";
-        // localStorage.password = "";
     }
 
     public function create_user() {
@@ -67,13 +33,33 @@ class Welcome extends CI_Controller {
         $sex=$this->input->post('sex');
         $age=$this->input->post('age');
         $telephone=$this->input->post('telephone');
-        $count=$this->input->post('count');
-        $type=$this->input->post('type');
+        $address=$this->input->post('address');
         $entertime=$this->input->post('entertime');
+        $count=$this->input->post('balance_internet');
+        $balance_state=$this->input->post('balance_state');
+        $balance_style=$this->input->post('balance_style');
+
         $this->load->model('user_model');
-        $row=$this->user_model->create_user($username,$sex,$age,$telephone,$count,$type,$entertime);
+        $row=$this->user_model->create_user($username,$sex,$age,$telephone,$address,$entertime);
+        echo json_encode($row);
         if($row) {
-            echo '1';//新建用户成功
+            $person=$this->user_model->find_user_id($username);
+            if($person) {
+                if($count=='入网'){
+                    $balance_money = '500';
+                }
+                else {
+                    $balance_money = '-500';
+                }
+                $this->load->model('balance_model');
+                $balance=$this->balance_model->create_balance($person->user_id,$balance_money,$balance_state,$balance_style);
+
+                if($balance)
+                    echo '1';//新建用户成功
+                else echo '0';
+            }
+            else echo '0';
+
         } else {
             echo '0';//新建用户失败
         }
