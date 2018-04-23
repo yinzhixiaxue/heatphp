@@ -11,5 +11,14 @@ class Balance_model extends CI_Model{
         ));
         return $this->db->affected_rows();
     }
+    public function pay_information() {
+        $sql = "select u.*,b.balance_money,b.balance_state,b.balance_style from heat_user u ,heat_balance b where u.user_id=b.user_id and b.balance_money>0";//查模糊匹配
+        return $this->db->query($sql)->result();
+    }
+
+    public function arrears_information() {
+        $sql = "select u.*,b.balance_money,b.balance_state,b.balance_style from heat_user u ,heat_balance b where u.user_id=b.user_id and b.balance_money<0";//查模糊匹配
+        return $this->db->query($sql)->result();
+    }
 
 }

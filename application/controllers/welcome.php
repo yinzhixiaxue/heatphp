@@ -92,12 +92,43 @@ class Welcome extends CI_Controller {
         header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
         header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
         header('Access-Control-Max-Age: 1728000');
-        $query = $this->input->post('query');
-        $row=$this->user_model->find_user_information($query);
+        $user_name = $this->input->post('username');
+        $this->load->model('user_model');
+        $row=$this->user_model->find_user_information($user_name);
         if($row) {
-            echo $row;
+            echo json_encode($row);
         } else {
-            echo 'no';
+            echo '0';
+        }
+
+    }
+
+    public function pay_information() {//缴费信息
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $this->load->model('balance_model');
+        $row=$this->balance_model->pay_information();
+        if($row) {
+            echo json_encode($row);
+        } else {
+            echo '0';
+        }
+
+    }
+
+    public function arrears_information() {//欠费信息
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $this->load->model('balance_model');
+        $row=$this->balance_model->arrears_information();
+        if($row) {
+            echo json_encode($row);
+        } else {
+            echo '0';
         }
 
     }
