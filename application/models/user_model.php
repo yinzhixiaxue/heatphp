@@ -14,15 +14,12 @@ class User_model extends CI_Model{
         return $this->db->affected_rows();
     }
 
-    public function update_user($userId,$username,$sex,$age,$telephone,$count,$type,$entertime) {
-        $this->db->set("user_name",$username);
+    public function update_user($username,$sex,$age,$telephone,$address) {
         $this->db->set("user_sex",$sex);
         $this->db->set("user_age",$age);
-        $this->db->set("user_telephone",$telephone); 
-        $this->db->set("user_count",$count);
-        $this->db->set("user_type",$type);
-        $this->db->set("user_entertime",$entertime);
-        $this->db->where("user_id",$userId);
+        $this->db->set("user_telephone",$telephone);
+        $this->db->set("user_address",$address);
+        $this->db->where("user_name",$username);
         $this->db->update("heat_user");
         return $this->db->affected_rows();
     }
