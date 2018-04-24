@@ -34,11 +34,12 @@ class Welcome extends CI_Controller {
         $age=$this->input->post('age');
         $telephone=$this->input->post('telephone');
         $address=$this->input->post('address');
-        $entertime=$this->input->post('entertime');
+//        $entertime=$this->input->post('entertime');
         $count=$this->input->post('balance_internet');
         $balance_state=$this->input->post('balance_state');
         $balance_style=$this->input->post('balance_style');
-
+        date_default_timezone_set("Asia/Shanghai");
+        $entertime=date('Y-m-d H:i:s');
         $this->load->model('user_model');
         $row=$this->user_model->create_user($username,$sex,$age,$telephone,$address,$entertime);
         if($row) {
