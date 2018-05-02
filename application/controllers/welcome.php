@@ -162,5 +162,19 @@ class Welcome extends CI_Controller {
         }
 
     }
+
+    public function find_blacklist() {
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $this->load->model('blacklist_model');
+        $row=$this->blacklist_model->find_blacklist();
+        if($row) {
+            echo json_encode($row);
+        } else {
+            echo '0';
+        }
+    }
 }
 
