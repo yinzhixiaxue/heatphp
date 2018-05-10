@@ -76,7 +76,7 @@ class Welcome extends CI_Controller {
         header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
         header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
         header('Access-Control-Max-Age: 1728000');
-        $userId = $this->input->post('userId');
+//        $userId = $this->input->post('userId');
         $username = $this->input->post('username');
         $sex=$this->input->post('sex');
         $age=$this->input->post('age');
@@ -171,6 +171,73 @@ class Welcome extends CI_Controller {
         $this->load->model('blacklist_model');
         $row=$this->blacklist_model->find_blacklist();
         if($row) {
+            echo json_encode($row);
+        } else {
+            echo '0';
+        }
+    }
+
+    public function update_balance_style() {
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $this->load->model('user_model');
+        $this->load->model('balance_model');
+        $username = $this->input->post('username');
+        $balance_style = $this->input->post('balance_style');
+        $person=$this->user_model->find_user_id($username);
+        $balance=$this->balance_model->update_balance_style($person->user_id,$balance_style);
+        if($balance>0) {
+            echo '1';
+        } else {
+            echo '0';
+        }
+    }
+
+    public function update_balance_state() {
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $this->load->model('user_model');
+        $this->load->model('balance_model');
+        $username = $this->input->post('username');
+        $balance_state = $this->input->post('balance_state');
+        $person=$this->user_model->find_user_id($username);
+        $balance=$this->balance_model->update_balance_state($person->user_id,$balance_state);
+        if($balance>0) {
+            echo '1';
+        } else {
+            echo '0';
+        }
+    }
+
+    public function find_stop() {
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $this->load->model('balance_model');
+        $row=$this->balance_model->find_stop();
+        if($row) {
+            echo json_encode($row);
+        } else {
+            echo '0';
+        }
+    }
+    public function update_stop_by_username() {
+        header('Access-Control-Allow-Origin:*');
+        header('Access-Control-Allow-Headers:DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+        header('Access-Control-Max-Age: 1728000');
+        $username = $this->input->post('username');
+        $month = $this->input->post('month');
+        $this->load->model('user_model');
+        $this->load->model('balance_model');
+        $person=$this->user_model->find_user_id($username);
+        $row=$this->balance_model->update_stop_by_username($person->user_id,$month);
+        if($row>0) {
             echo json_encode($row);
         } else {
             echo '0';
